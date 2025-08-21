@@ -1,112 +1,141 @@
-# Kumpy 🐍🔧
+# Kumpy Learning Guide
 
-A simple NumPy-like library for learning how to write Python extensions with C++. This project focuses on element-wise arithmetic operations and is designed as a beginner-friendly introduction to creating Python libraries that utilize C++ underneath.
+Welcome to your C++ and Python integration learning journey! This guide will help you understand how to implement the missing functionality step by step.
 
-## Features
+## What's Already Implemented (Your Examples)
 
-- Element-wise arithmetic operations (addition, subtraction, multiplication, division)
-- Scalar operations
-- Simple Array class with NumPy-like interface
-- C++ backend for performance
-- Docker development environment with VS Code support
+**Array Addition** (`add_arrays`) - Study this as your main example
+**Scalar Multiplication** (`multiply_scalar`) - Study this for scalar operations
+**KumpyArray class** - The C++ array container
+**Python Array wrapper** - The Python interface
 
-## Development Environment
+## What You Need to Implement (Your Exercises)
 
-This project includes a complete Docker development environment that you can use with VS Code Remote Containers.
+1. **Scalar Addition** (`add_scalar`)
+2. **Array Subtraction** (`subtract_arrays`)
+3. **Array Multiplication** (`multiply_arrays`)
+4. **Array Division** (`divide_arrays`)
+5. **Scalar Subtraction** (`subtract_scalar`)
+6. **Scalar Division** (`divide_scalar`)
 
-### Prerequisites
+## Step-by-Step Learning Process
 
-- Docker
-- VS Code with Remote-Containers extension
-
-### Getting Started
-
-1. Clone this repository
-2. Open in VS Code
-3. When prompted, click "Reopen in Container" or use Command Palette: "Remote-Containers: Reopen in Container"
-4. The development environment will be automatically set up with all dependencies
-
-### Manual Docker Setup
-
-If you prefer to use Docker manually:
-
+### Step 1: Build and Test Current State
 ```bash
-# Build the Docker image
-docker build -t kumpy-dev .
-
-# Run the container
-docker run -it -v $(pwd):/workspace kumpy-dev
-```
-
-## Building the Extension
-
-Once in the development environment:
-
-```bash
-# Install in development mode
+# Build the extension
 pip install -e .
 
-# Or build manually
-python setup.py build_ext --inplace
+# Test what works
+python examples/learning_example.py
 ```
 
-## Usage
+### Step 2: Study the Working Examples
 
-```python
-import kumpy
+Open `src/kumpy_core.cpp` and look at these two functions:
 
-# Create arrays
-a = kumpy.Array([1, 2, 3, 4])
-b = kumpy.Array([5, 6, 7, 8])
-
-# Element-wise operations
-c = a + b  # [6, 8, 10, 12]
-d = a * 2  # [2, 4, 6, 8]
-
-print(c)  # Array([6.0, 8.0, 10.0, 12.0])
+**Array Addition (lines ~91-105):**
+```cpp
+KumpyArray add_arrays(const KumpyArray& a, const KumpyArray& b) {
+    if (a.size() != b.size()) {
+        throw std::runtime_error("Arrays must have the same size");
+    }
+    
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] + b[i];  // ← The key operation
+    }
+    
+    return KumpyArray(result_data);
+}
 ```
 
-## Project Structure
-
-```
-kumpy/
-├── .devcontainer/
-│   └── devcontainer.json    # VS Code dev container configuration
-├── src/
-│   └── kumpy_core.cpp       # C++ implementation
-├── kumpy/
-│   ├── __init__.py          # Package initialization
-│   └── array.py             # Python Array class
-├── tests/                   # Test files (to be added)
-├── Dockerfile               # Development environment
-├── setup.py                 # Build configuration
-└── README.md               # This file
+**Scalar Multiplication (lines ~155-162):**
+```cpp
+KumpyArray multiply_scalar(const KumpyArray& a, double scalar) {
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] * scalar;  // <- The key operation
+    }
+    return KumpyArray(result_data);
+}
 ```
 
-## Learning Goals
+### Step 3: Implement Your First Function
 
-This project is designed to help you learn:
+Start with **scalar addition** (`add_scalar`). Find this in the file:
 
-1. **Pybind11**: How to create Python bindings for C++ code
-2. **NumPy C API**: Working with NumPy arrays in C++
-3. **Python Extensions**: Building and packaging Python extensions
-4. **Docker Development**: Using containerized development environments
-5. **C++ Fundamentals**: Basic C++ programming for numerical computing
+```cpp
+KumpyArray add_scalar(const KumpyArray& a, double scalar) {
+    // TODO: Your implementation here
+    throw std::runtime_error("add_scalar not implemented yet - this is your exercise!");
+}
+```
 
-## Next Steps
+Replace it with:
+```cpp
+KumpyArray add_scalar(const KumpyArray& a, double scalar) {
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] + scalar;  // <- Change * to +
+    }
+    return KumpyArray(result_data);
+}
+```
 
-1. Build and test the basic functionality
-2. Add more array operations (sum, mean, etc.)
-3. Implement broadcasting for operations between arrays of different shapes
-4. Add comprehensive tests
-5. Optimize performance with SIMD instructions
-6. Package and publish to PyPI
+### Step 4: Test Your Implementation
+```bash
+# Rebuild
+pip install -e .
 
-## Contributing
+# Test
+python examples/learning_example.py
+```
 
-This is a learning project, but contributions and suggestions are welcome!
+You should see scalar addition working now!
 
-## License
+### Step 5: Continue with the Rest
 
-MIT License - see LICENSE file for details.
-# kumpy
+Follow the same pattern for:
+- `subtract_arrays`: Use `-` instead of `+`
+- `multiply_arrays`: Use `*` instead of `+`
+- `divide_arrays`: Use `/` instead of `+` (but check for zero!)
+- `subtract_scalar`: Use `-` instead of `*`
+- `divide_scalar`: Use `/` instead of `*` (but check for zero!)
+
+## Key C++ Concepts You're Learning
+
+1. **Function Parameters**: `const KumpyArray& a` (reference, no copying)
+2. **STL Vectors**: `std::vector<double>` for dynamic arrays
+3. **Loops**: `for (size_t i = 0; i < a.size(); i++)`
+4. **Error Handling**: `throw std::runtime_error(...)`
+5. **Object Construction**: `return KumpyArray(result_data)`
+
+## Key Python-C++ Integration Concepts
+
+1. **Pybind11 Binding**: How C++ functions become Python functions
+2. **Object Wrapping**: How `KumpyArray` becomes `Array`
+3. **Exception Handling**: How C++ exceptions become Python exceptions
+4. **Memory Management**: Pybind11 handles this automatically!
+
+## Common Mistakes to Avoid
+
+1. **Division by Zero**: Always check `if (scalar == 0.0)` or `if (b[i] == 0.0)`
+2. **Size Mismatch**: Always check `if (a.size() != b.size())`
+3. **Syntax Errors**: C++ is strict about semicolons and braces
+4. **Rebuild**: Always run `pip install -e .` after changing C++ code
+
+## Success Criteria
+
+When you're done, `python examples/learning_example.py` should show:
+- All operations working
+- Success messages for everything
+- No "not implemented" messages
+
+## Next Steps After Completion
+
+1. Add more operations (sum, mean, etc.)
+2. Implement 2D array support
+3. Add broadcasting for different sized arrays
+4. Optimize with SIMD instructions
+5. Add comprehensive tests
+

@@ -1,0 +1,22 @@
+# Core dependencies for Kumpy
+pybind11>=2.6.0
+
+# Build and packaging tools
+build
+setuptools-scm
+wheel
+twine
+
+# Development and testing tools
+pytest>=6.0.0
+pytest-cov
+black
+flake8
+mypy
+
+# Documentation
+sphinx
+
+# Jupyter for experimentation
+jupyter
+ipython
