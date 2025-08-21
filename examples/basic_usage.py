@@ -3,28 +3,27 @@
 Basic usage examples for Kumpy
 """
 
+import kumpy
 import sys
 import os
 
 # Add the parent directory to the path so we can import kumpy
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-import kumpy
-
 
 def main():
     print("Welcome to Kumpy - A NumPy-like library with C++ backend! 🔧")
     print("=" * 60)
-    
+
     # Create some arrays
     print("\n1. Creating Arrays:")
     a = kumpy.Array([1, 2, 3, 4])
     b = kumpy.Array([5, 6, 7, 8])
     print(f"a = {a}")
     print(f"b = {b}")
-    
+  
     # Basic properties
-    print(f"\nArray properties:")
+    print("\nArray properties:")
     print(f"a.shape = {a.shape}")
     print(f"a.size = {a.size}")
     
