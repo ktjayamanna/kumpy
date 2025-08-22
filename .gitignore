@@ -1,1 +1,7 @@
 .augment
+# add all .so files
+*.so
+kumpy.egg-info
+# add all pycache files
+kumpy/__pycache__
+tests/__pycache__

@@ -189,7 +189,7 @@ PYBIND11_MODULE(_core, m) {
         .def(py::init<const std::vector<double>&>())
         .def(py::init<const std::vector<std::vector<double>>&>())
         .def(py::init<const std::vector<size_t>&, double>(), py::arg("shape"), py::arg("initial_value") = 0.0)
-        .def("data", &KumpyArray::data, py::return_value_policy::reference_internal)
+        .def("data", [](const KumpyArray& a) { return a.data(); })
         .def("shape", &KumpyArray::shape)
         .def("size", &KumpyArray::size)
         .def("__getitem__", [](const KumpyArray& a, size_t i) { return a[i]; })
