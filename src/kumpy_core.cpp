@@ -106,8 +106,6 @@ KumpyArray add_arrays(const KumpyArray& a, const KumpyArray& b) {
 
 /**
  * Element-wise subtraction of two arrays
- * TODO: Implement this yourself!
- * Hint: Follow the same pattern as add_arrays
  */
 KumpyArray subtract_arrays(const KumpyArray& a, const KumpyArray& b) {
     if (a.size() != b.size()) {
@@ -123,34 +121,48 @@ KumpyArray subtract_arrays(const KumpyArray& a, const KumpyArray& b) {
 
 /**
  * Element-wise multiplication of two arrays
- * TODO: Implement this yourself!
- * Hint: Follow the same pattern as add_arrays, but use * instead of +
  */
 KumpyArray multiply_arrays(const KumpyArray& a, const KumpyArray& b) {
-    // TODO: Your implementation here
+    if (a.size() != b.size()) {
+        throw std::runtime_error("Arrays must have the same size");
+    }
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] * b[i];
+    }
+    return KumpyArray(result_data);
     throw std::runtime_error("multiply_arrays not implemented yet - this is your exercise!");
 }
 
 /**
  * Element-wise division of two arrays
- * TODO: Implement this yourself!
- * Hint: Follow the same pattern as add_arrays, but use / instead of +
- * Don't forget to check for division by zero!
  */
 KumpyArray divide_arrays(const KumpyArray& a, const KumpyArray& b) {
     // TODO: Your implementation here
     // Remember to check if b[i] == 0.0 and throw an error if so!
-    throw std::runtime_error("divide_arrays not implemented yet - this is your exercise!");
+    if (a.size() != b.size()) {
+        throw std::runtime_error("Arrays must have the same size");
+    }
+    if (std::any_of(b.data().begin(), b.data().end(), [](double x) { return x == 0.0; })) {
+        throw std::runtime_error("Division by zero");
+    }
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] / b[i];
+    }
+    return KumpyArray(result_data);
 }
 
 /**
  * Scalar addition
- * TODO: Implement this yourself!
- * Hint: Follow the same pattern as multiply_scalar, but use + instead of *
  */
 KumpyArray add_scalar(const KumpyArray& a, double scalar) {
     // TODO: Your implementation here
-    throw std::runtime_error("add_scalar not implemented yet - this is your exercise!");
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] + scalar;
+    }
+    return KumpyArray(result_data);
 }
 
 /**
@@ -167,24 +179,29 @@ KumpyArray multiply_scalar(const KumpyArray& a, double scalar) {
 
 /**
  * Scalar subtraction
- * TODO: Implement this yourself!
- * Hint: Follow the same pattern as multiply_scalar, but use - instead of *
  */
 KumpyArray subtract_scalar(const KumpyArray& a, double scalar) {
     // TODO: Your implementation here
-    throw std::runtime_error("subtract_scalar not implemented yet - this is your exercise!");
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] - scalar;
+    }
+    return KumpyArray(result_data);
 }
 
 /**
  * Scalar division
- * TODO: Implement this yourself!
- * Hint: Follow the same pattern as multiply_scalar, but use / instead of *
- * Don't forget to check for division by zero first!
  */
 KumpyArray divide_scalar(const KumpyArray& a, double scalar) {
     // TODO: Your implementation here
-    // Remember to check if scalar == 0.0 and throw an error if so!
-    throw std::runtime_error("divide_scalar not implemented yet - this is your exercise!");
+    if (scalar == 0.0) {
+        throw std::runtime_error("Division by zero");
+    }
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] / scalar;
+    }
+    return KumpyArray(result_data);
 }
 
 // Pybind11 module definition

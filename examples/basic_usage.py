@@ -45,6 +45,13 @@ def main():
     # Division
     f = b / a
     print(f"b / a = {f}")
+
+    # Division by zero
+    try:
+        g = a / kumpy.Array([0, 0, 0, 0])
+        print(f"a / 0 = {g}")
+    except RuntimeError as e:
+        print("Division by zero caught!")
     
     # Scalar operations
     print("\n3. Scalar Operations:")
