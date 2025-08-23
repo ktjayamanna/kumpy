@@ -110,7 +110,14 @@ KumpyArray add_arrays(const KumpyArray& a, const KumpyArray& b) {
  * Hint: Follow the same pattern as add_arrays
  */
 KumpyArray subtract_arrays(const KumpyArray& a, const KumpyArray& b) {
-    // TODO: Your implementation here
+    if (a.size() != b.size()) {
+        throw std::runtime_error("Arrays must have the same size");
+    }
+    std::vector<double> result_data(a.size());
+    for (size_t i = 0; i < a.size(); i++) {
+        result_data[i] = a[i] - b[i];
+    }
+    return KumpyArray(result_data);
     throw std::runtime_error("subtract_arrays not implemented yet - this is your exercise!");
 }
 
